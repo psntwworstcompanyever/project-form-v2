@@ -1,7 +1,9 @@
+const API_URL = import.meta.env.VITE_API_URL;
+
 // Fetch functions
 export const fetchPCBAList = async (list) => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/pcba-list/get');
+      const response = await fetch(`${API_URL}/pcba-list/get`);
       list.value = await response.json(); // Updated to .value
     } catch (error) {
       console.error('Failed to fetch PCBA list:', error);
@@ -9,7 +11,7 @@ export const fetchPCBAList = async (list) => {
   };
 export const fetchCustomerList = async (list) => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/customer-list/get');
+      const response = await fetch(`${API_URL}/customer-list/get`);
       list.value = await response.json(); // Updated to .value
     } catch (error) {
       console.error('Failed to fetch customer list:', error);
@@ -18,7 +20,7 @@ export const fetchCustomerList = async (list) => {
 
   export const fetchHardwareSettings = async (pcba_sn, list) => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/hardware-settings/pcba/${pcba_sn}`);
+      const response = await fetch(`${API_URL}/hardware-settings/pcba/${pcba_sn}`);
       list.value = await response.json(); // Updated to .value
       return list.value; // Return value for use
     } catch (error) {
@@ -28,7 +30,7 @@ export const fetchCustomerList = async (list) => {
 
 export const fetchSoftwareSettings = async (list) => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/software-settings/specifications');
+      const response = await fetch(`${API_URL}/software-settings/specifications`);
       list.value = await response.json(); // Updated to .value
       return list.value // Return value for use
     } catch (error) {
@@ -38,7 +40,7 @@ export const fetchSoftwareSettings = async (list) => {
   
 export const fetchCustomerSettings = async (customer, list) => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/customer-settings/customer/${customer}`);
+      const response = await fetch(`${API_URL}/customer-settings/customer/${customer}`);
       list.value = await response.json(); // Updated to .value
       return list.value; // Return value for use
     } catch (error) {
@@ -48,7 +50,7 @@ export const fetchCustomerSettings = async (customer, list) => {
 
   export const fetchNote = async (spec, customer, list) => {
     try {
-        const response = await fetch(`http://127.0.0.1:8000/note/get?spec=${spec}&customer=${customer}`);
+        const response = await fetch(`${API_URL}/note/get?spec=${spec}&customer=${customer}`);
         list.value = await response.json(); // Updated to .value
         return list.value; // Return value for use
     } catch (error) {

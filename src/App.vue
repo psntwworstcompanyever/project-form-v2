@@ -4,6 +4,8 @@ import { ref, onMounted } from 'vue';
 import { getNode, createNode } from '@formkit/core';
 import { fetchPCBAList, fetchCustomerList, fetchHardwareSettings, fetchSoftwareSettings, fetchCustomerSettings, fetchNote } from './api/api';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const pcba_list = ref([]);
 const customer_list = ref([]);
 const hardware_settings = ref([]);
@@ -164,7 +166,8 @@ const handleSubmit = async () => {
   };
 
   try {
-    const response = await fetch('http://127.0.0.1:8000/create-project/submit', {  // Change the URL to your actual endpoint
+
+    const response = await fetch(`${API_URL}/create-project/submit`, {  // Change the URL to your actual endpoint
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
