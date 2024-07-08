@@ -22,7 +22,6 @@ export const fetchCustomerList = async (list) => {
     try {
       const response = await fetch(`${API_URL}/hardware-settings/pcba/${pcba_sn}`);
       list.value = await response.json(); // Updated to .value
-      return list.value; // Return value for use
     } catch (error) {
       console.error('Failed to fetch hardware settings:', error);
     }
@@ -42,9 +41,17 @@ export const fetchCustomerSettings = async (customer, list) => {
     try {
       const response = await fetch(`${API_URL}/customer-settings/customer/${customer}`);
       list.value = await response.json(); // Updated to .value
-      return list.value; // Return value for use
     } catch (error) {
       console.error('Failed to fetch customer settings:', error);
+    }
+  };
+
+  export const fetchEmailSettings = async (list) => {
+    try {
+      const response = await fetch(`${API_URL}/email-settings/`);
+      list.value = await response.json(); // Updated to .value
+    } catch (error) {
+      console.error('Failed to fetch email settings:', error);
     }
   };
 
@@ -52,7 +59,6 @@ export const fetchCustomerSettings = async (customer, list) => {
     try {
         const response = await fetch(`${API_URL}/note/get?spec=${spec}&customer=${customer}`);
         list.value = await response.json(); // Updated to .value
-        return list.value; // Return value for use
     } catch (error) {
         console.error('Failed to fetch note:', error);
     }

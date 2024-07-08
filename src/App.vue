@@ -2,7 +2,7 @@
 import { FormKitSchema } from "@formkit/vue";
 import { ref, onMounted } from 'vue';
 import { getNode, createNode } from '@formkit/core';
-import { fetchPCBAList, fetchCustomerList, fetchHardwareSettings, fetchSoftwareSettings, fetchCustomerSettings, fetchNote } from './api/api';
+import { fetchPCBAList, fetchCustomerList, fetchHardwareSettings, fetchSoftwareSettings, fetchCustomerSettings, fetchEmailSettings, fetchNote } from './api/api';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -10,6 +10,7 @@ const pcba_list = ref([]);
 const customer_list = ref([]);
 const hardware_settings = ref([]);
 const software_settings = ref([]);
+const email_settings = ref([]);
 const customer_settings = ref({});
 const note_list = ref([]);
 
@@ -63,6 +64,7 @@ const fetchData = async () => {
   await fetchCustomerSettings('Default', customer_settings); // Seems that customer_settings has to be fetched before software_settings
   await fetchHardwareSettings('1AXX-00A', hardware_settings);
   await fetchSoftwareSettings(software_settings);
+  await fetchEmailSettings(email_settings);
 
   software_settings.value = reconstructFunctions(software_settings.value);
   hardware_settings.value = reconstructFunctions(hardware_settings.value);
@@ -139,7 +141,7 @@ const updatePopupCard = (selectedLabel, selectedOption, selectedCustomer, custom
     'illustration': `Illustration: ${note_list.value[0].illustration}`,
     'selected_item': `Selected Item: ${selectedOption}`,
     'customer': `Customer: ${selectedCustomer}`,
-    'customer_setting': `Customer Setting: ${customerSetting}`,
+    'customer_setting': customerSetting ? `Customer Setting: ${customerSetting}` : 'Customer Setting: Not available',
     'recommendation': `Recommendation: ${note_list.value[1].recommendation}`
   };
 
@@ -157,12 +159,14 @@ const handleSubmit = async () => {
   const customerNode = getNode('customer');
   const hardwareNode = getNode('hardware');
   const softwareNode = getNode('software');
+  const emailNode = getNode('email')
 
   const postData = {
     pcba: pcbaNode.value,
     customer: customerNode.value,
     hardware: hardwareNode.value,
-    software: softwareNode.value
+    software: softwareNode.value,
+    email: emailNode.value
   };
 
   try {
@@ -217,6 +221,9 @@ onMounted(() => {
     <FormKit type="group" name="software" id="software">
       <FormKitSchema :schema="software_settings" :data="data" />
     </FormKit>
+    <FormKit type="group" name="email" id="email">
+      <FormKitSchema :schema="email_settings" />
+    </FormKit>
   </FormKit>
 
   <div v-if="isPopupVisible" class="popup">
@@ -225,10 +232,6 @@ onMounted(() => {
       <button @click="isPopupVisible = false">Close</button>
     </FormKit>
   </div>
-
-  <pre>
-    {{ customer_settings }}
-  </pre>
 
 </template>
 
